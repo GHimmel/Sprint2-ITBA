@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="estilos.css" />
+    <title>Sprint 2</title>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>App de gastos</h1>
+        <h5>ingresa cuánto pagó cada persona</h5>
+      </div>
+    </header>
+    <main>
+      <div>
+        <input
+          class="form-control"
+          type="text"
+          placeholder="Nombre"
+          aria-label="default input example"
+          id="nombre"
+        />
+        <input
+          class="form-control"
+          type="number"
+          placeholder="ingresar monto"
+          aria-label="default input example"
+          id="monto"
+        />
+        <button type="button" class="btn btn-primary" onclick="repartir()">
+          Enviar
+        </button>
+        <button type="button" class="btn btn-danger" onclick="borrar()">
+          Borrar
+        </button>
+        <ul class="list-group" id="list"></ul>
+        <div id="total"></div>
+        <div id="tota"></div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const pagos = [];
+      const usuarios = [];
+      const listado = document.getElementById("list");
+      const cuadro = document.getElementById("total");
+      const cuadro2 = document.getElementById("tota");
+      const usuario = document.getElementById("nombre");
+      const pago = document.getElementById("monto");
+      let num = 0;
+
+      function repartir() {
+        nombreYgasto();
+        listaNombre();
+        pagoIndividual();
+        num++;
+      }
+
+      function nombreYgasto() {
+        usuarios.push(usuario.value);
+        pagos.push(pago.value);
+      }
+
+      function listaNombre() {
+        const li = document.createElement("li");
+        const text = document.createTextNode(
+          `${usuario.value} : $ ${pago.value} `
+        );
+        li.classList.add("list-group-item");
+        li.appendChild(text);
+        li.setAttribute("id", num);
+        listado.appendChild(li);
+      }
+
+      function borrar() {
+        let h = document.getElementsByTagName("li");
+        listado.removeChild(h.item(pagos.length - 1));
+
+        pagos.pop();
+        usuarios.pop();
+        console.log(pagos);
+        pagoIndividual(pagos);
+      }
+
+      function sumarValores() {
+        let suma = 0;
+        for (let s of pagos) {
+          suma += parseInt(s);
+        }
+        return suma;
+      }
+
+      function pagoIndividual() {
+        let total = sumarValores(pagos);
+        const paIndividual = total / usuarios.length;
+
+        cuadro.innerHTML = `Total : ${total}`;
+        cuadro2.innerHTML = `A cada uno le toca pagar : ${paIndividual.toFixed(
+          2
+        )}`;
+      }
+    </script>
+  </body>
+</html>
